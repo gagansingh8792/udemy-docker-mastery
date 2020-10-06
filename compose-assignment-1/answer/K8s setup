@@ -1,0 +1,40 @@
+ Kubernets Play ground
+ -----------------------
+ 
+ https://labs.play-with-k8s.com/
+ 
+1) Initializes cluster master node 
+	#kubeadm init --apiserver-advertise-address $(hostname -i) --pod-network-cidr 10.5.0.0/16
+	
+2) Initialize cluster networking:
+
+kubectl apply -f https://raw.githubusercontent.com/cloudnativelabs/kube-router/master/daemonset/kubeadm-kuberouter.yaml
+
+3) join any number of worker nodes by running the following on each as root:
+
+kubeadm join 192.168.0.38:6443 --token p64u7h.n45nh0921aggc3ne \
+    --discovery-token-ca-cert-hash sha256:896a76011f4aa2e0a5cc15c96b63e24b4779e69a17f2531f31c1c54db57d4ff2
+	
+[node1 ~]$ kubectl get node		>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> (Nodes information)
+NAME    STATUS   ROLES    AGE    VERSION
+node1   Ready    master   3m8s   v1.18.4
+node2   Ready    <none>   106s   v1.18.4
+node3   Ready    <none>   100s   v1.18.4
+
+[node1 ~]$ kubectl get service	>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> (Cluster Information)
+NAME         TYPE        CLUSTER-IP   EXTERNAL-IP   PORT(S)   AGE
+kubernetes   ClusterIP   10.96.0.1    <none>        443/TCP   4m44s
+
+============================================================================================================================================================================
+============================================================================================================================================================================
+
+KUBCTL COMMANDS 
+------------
+
+#kubectl get node				//Nodes information
+#kubectl get service			//Cluster Information
+#kubectl get pods				//Pods information
+
+kubectl run <name> --image=<image> [--env="key=value"] [--port=port] [--dry-run=server|client] [--overrides=inline-json] [--command] -- [COMMAND] [args...]
+
+eg:- kubectl run nginx --image=nginx
